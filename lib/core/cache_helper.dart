@@ -6,8 +6,4 @@ class CacheHelper {
   static Future<void> init() async {
     sharedPreferences = await SharedPreferences.getInstance();
   }
-
-  static bool isLogin() {
-    return sharedPreferences.getBool("isLogin") ?? false;
-  }
 }

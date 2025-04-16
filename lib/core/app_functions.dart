@@ -27,4 +27,16 @@ extension AppFunctions on BuildContext {
       (route) => false,
     );
   }
+
+  void showSuccessSnack(String message) {
+    ScaffoldMessenger.of(this).showSnackBar(
+      SnackBar(content: Text(message), backgroundColor: Colors.green),
+    );
+  }
+
+  void showErrorSnack(String message) {
+    ScaffoldMessenger.of(this).showSnackBar(
+      SnackBar(content: Text(message), backgroundColor: Colors.red),
+    );
+  }
 }

@@ -1,7 +1,6 @@
 import 'package:edugate/core/app_colors.dart';
 import 'package:edugate/core/app_functions.dart';
-import 'package:edugate/core/cache_helper.dart';
-import 'package:edugate/features/home/home_screen.dart';
+
 import 'package:edugate/features/login/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -13,7 +12,7 @@ class SplashScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     Future.delayed(const Duration(seconds: 3), () {
       if (context.mounted) {
-        context.goOffAll(CacheHelper.isLogin() ? HomeScreen() : LoginScreen());
+        context.goOffAll(LoginScreen());
       }
     });
 
