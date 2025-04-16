@@ -29,6 +29,7 @@ class LoginCubit extends Cubit<LoginState> {
             await firestore.collection("users").doc(dataAuth.user?.uid).get();
         if (data.data() != null) {
           userData = data.data() ?? {};
+          userData['uid'] = dataAuth.user?.uid;
           emit(LoginSuccessState());
         } else {
           emit(LoginErrorState());
