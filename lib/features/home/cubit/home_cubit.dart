@@ -24,7 +24,8 @@ class HomeCubit extends Cubit<HomeState> {
       var data = await firestore.collection("universities").get();
       allUniversities = data.docs.map((e) => e.data()).toList();
       universities = allUniversities;
-      emit(SuccessHomeState());
+      // emit(SuccessHomeState());
+      getSliders();
     } catch (error) {
       emit(ErrorHomeState());
     }
@@ -44,5 +45,20 @@ class HomeCubit extends Cubit<HomeState> {
               .toList();
     }
     emit(SuccessHomeState());
+  }
+
+  List<Map<String, dynamic>> sliders = [];
+  void getSliders() async {
+    if (sliders.isNotEmpty) {
+      return;
+    }
+    emit(LoadingHomeState());
+    try {
+      var data = await firestore.collection("slider").get();
+      sliders = data.docs.map((e) => e.data()).toList();
+      emit(SuccessHomeState());
+    } catch (error) {
+      emit(ErrorHomeState());
+    }
   }
 }

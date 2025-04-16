@@ -1,7 +1,14 @@
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:edugate/core/app_functions.dart';
+import 'package:edugate/features/about_us/about_us_dialog.dart';
+import 'package:edugate/features/applications/applications_screen.dart';
+import 'package:edugate/features/contact_us/contact_us_dialog.dart';
 import 'package:edugate/features/home/cubit/home_cubit.dart';
+import 'package:edugate/features/profile/profile_screen.dart';
+import 'package:edugate/features/splash/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../core/app_colors.dart';
 import '../university_details/university_details_screen.dart';
@@ -17,7 +24,96 @@ class HomeScreen extends StatelessWidget {
         var universities = HomeCubit.get(context).universities;
         return Scaffold(
           appBar: AppBar(title: Text("EduGate")),
-
+          endDrawer: Drawer(
+            child: Column(
+              children: [
+                Container(
+                  height: 200,
+                  width: double.infinity,
+                  color: AppColors.primary,
+                  child: Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        SvgPicture.asset(
+                          "assets/icons/icon.svg",
+                          height: 50,
+                          width: 50,
+                          colorFilter: ColorFilter.mode(
+                            Colors.white,
+                            BlendMode.srcIn,
+                          ),
+                        ),
+                        Text(
+                          "EduGate",
+                          style: TextStyle(fontSize: 30, color: Colors.white),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                ListTile(
+                  title: Text("Profile"),
+                  onTap: () {
+                    context.goToPage(ProfileScreen());
+                  },
+                  leading: Icon(Icons.person),
+                ),
+                ListTile(
+                  title: Text("Applications"),
+                  onTap: () {
+                    context.goToPage(ApplicationsScreen());
+                  },
+                  leading: Icon(Icons.pages),
+                ),
+                ListTile(
+                  title: Text("About us"),
+                  onTap: () {
+                    AboutUsDialog.show(context);
+                  },
+                  leading: Icon(Icons.info),
+                ),
+                ListTile(
+                  title: Text("Contact us"),
+                  onTap: () {
+                    ContactUsDialog.show(context);
+                  },
+                  leading: Icon(Icons.contact_page),
+                ),
+                ListTile(
+                  leading: Icon(Icons.logout, color: Colors.red),
+                  title: Text("Logout"),
+                  onTap: () {
+                    showDialog(
+                      context: context,
+                      builder:
+                          (context) => AlertDialog(
+                            title: Text("Are you sure you want to logout?"),
+                            actions: [
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                                child: Text("Cancel"),
+                              ),
+                              TextButton(
+                                onPressed: () {
+                                  context.goOffAll(SplashScreen());
+                                },
+                                child: Text(
+                                  "Logout",
+                                  style: TextStyle(color: Colors.red),
+                                ),
+                              ),
+                            ],
+                          ),
+                    );
+                  },
+                  textColor: Colors.red,
+                ),
+              ],
+            ),
+          ),
           body:
               state is LoadingHomeState
                   ? Center(child: CircularProgressIndicator())
@@ -26,6 +122,34 @@ class HomeScreen extends StatelessWidget {
                     child: SingleChildScrollView(
                       child: Column(
                         children: [
+                          CarouselSlider.builder(
+                            itemCount: HomeCubit.get(context).sliders.length,
+                            itemBuilder: (context, index, realIndex) {
+                              return Container(
+                                margin: EdgeInsets.all(5),
+                                width: context.screenWidth,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(8),
+                                  image: DecorationImage(
+                                    fit: BoxFit.cover,
+
+                                    image: NetworkImage(
+                                      HomeCubit.get(
+                                        context,
+                                      ).sliders[index]["value"],
+                                    ),
+                                  ),
+                                ),
+                              );
+                            },
+                            options: CarouselOptions(
+                              height: 100,
+                              autoPlay: true,
+                              enlargeCenterPage: true,
+                              viewportFraction: 1,
+                            ),
+                          ),
+                          SizedBox(height: 5),
                           SearchBar(
                             hintText: "Search for universities",
                             onChanged: (value) {
