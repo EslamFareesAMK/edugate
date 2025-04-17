@@ -54,6 +54,7 @@ class StudentApplication {
   final String certificatePhoto;
   final String status;
   final DateTime interviewDate;
+  final String interviewDesc;
 
   StudentApplication({
     required this.date,
@@ -73,6 +74,7 @@ class StudentApplication {
     required this.certificatePhoto,
     required this.status,
     required this.interviewDate,
+    required this.interviewDesc,
   });
 
   factory StudentApplication.fromJson(Map<String, dynamic> json) {
@@ -93,6 +95,7 @@ class StudentApplication {
       user: User.fromJson(json['user']),
       certificatePhoto: json['certificatePhoto'],
       status: json['status'],
+      interviewDesc: json['interviewDesc'],
       interviewDate: DateTime.parse(json['interviewDate']),
     );
   }

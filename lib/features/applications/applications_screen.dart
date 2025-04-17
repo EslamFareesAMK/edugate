@@ -81,16 +81,15 @@ class ApplicationsScreen extends StatelessWidget {
                                   ),
                                   SizedBox(height: 10),
                                   Text("Fees : ${item.major.fees}"),
-                                  SizedBox(height: 10),
 
-                                  Text(
-                                    "Requirements : ${item.university.requirements}",
-                                    maxLines: 4,
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                  Spacer(),
                                   if (item.status == "interview")
-                                    Text("You have interview on "),
+                                    Text(
+                                      "You have interview on ${item.interviewDate.year}-${item.interviewDate.month}-${item.interviewDate.day}",
+                                    ),
+                                  if (item.status == "interview")
+                                    Text(
+                                      "Interview Description : ${item.interviewDesc}",
+                                    ),
 
                                   // if (item.status != "rejected")
                                   //   MaterialButton(

@@ -73,6 +73,7 @@ class ApplyCubit extends Cubit<ApplyState> {
             "idPhoto": idPhoto,
             "certificatePhoto": certificatePhoto,
             "interviewDate": DateTime(2010).toString(),
+            "interviewDesc": "",
           })
           .then((value) {
             emit(SuccessApplyState());
