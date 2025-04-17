@@ -1,10 +1,12 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:edugate/core/app_functions.dart';
+import 'package:edugate/core/cache_helper.dart';
 import 'package:edugate/features/about_us/about_us_dialog.dart';
 import 'package:edugate/features/applications/applications_screen.dart';
 import 'package:edugate/features/contact_us/contact_us_dialog.dart';
 import 'package:edugate/features/home/cubit/home_cubit.dart';
 import 'package:edugate/features/profile/profile_screen.dart';
+import 'package:edugate/features/saved_universities/saved_universities_screen.dart';
 import 'package:edugate/features/splash/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -19,7 +21,15 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     HomeCubit.get(context).getUniversities();
-    return BlocBuilder<HomeCubit, HomeState>(
+    return BlocConsumer<HomeCubit, HomeState>(
+      listener: (context, state) {
+        if (state is SavedFavouriteState) {
+          context.showSuccessSnack("Saved to favoourites");
+        }
+        if (state is RemovedFavouriteState) {
+          context.showErrorSnack("Removed from favourites");
+        }
+      },
       builder: (context, state) {
         var universities = HomeCubit.get(context).universities;
         return Scaffold(
@@ -63,6 +73,13 @@ class HomeScreen extends StatelessWidget {
                   title: Text("My Applications"),
                   onTap: () {
                     context.goToPage(ApplicationsScreen());
+                  },
+                  leading: Icon(Icons.pages),
+                ),
+                ListTile(
+                  title: Text("Saved Universities"),
+                  onTap: () {
+                    context.goToPage(SavedUniversitiesScreen());
                   },
                   leading: Icon(Icons.pages),
                 ),
@@ -183,7 +200,10 @@ class HomeScreen extends StatelessWidget {
                               )
                               : ListView.builder(
                                 itemBuilder: (context, index) {
-                                  final item = universities[index];
+                                  var item = universities[index];
+                                  var isFavourite = CacheHelper.isFavorite(
+                                    item.id,
+                                  );
                                   return SizedBox(
                                     height: 300,
                                     child: Card(
@@ -209,13 +229,37 @@ class HomeScreen extends StatelessWidget {
                                                 crossAxisAlignment:
                                                     CrossAxisAlignment.start,
                                                 children: [
-                                                  Text(
-                                                    item.name,
-                                                    style: TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      fontSize: 20,
-                                                    ),
+                                                  Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceBetween,
+                                                    children: [
+                                                      Text(
+                                                        item.name,
+                                                        style: TextStyle(
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          fontSize: 20,
+                                                        ),
+                                                      ),
+                                                      IconButton(
+                                                        onPressed: () {
+                                                          HomeCubit.get(
+                                                            context,
+                                                          ).makeFavourite(item);
+                                                        },
+                                                        icon: Icon(
+                                                          isFavourite
+                                                              ? Icons.favorite
+                                                              : Icons
+                                                                  .favorite_border,
+                                                          color:
+                                                              isFavourite
+                                                                  ? Colors.red
+                                                                  : Colors.grey,
+                                                        ),
+                                                      ),
+                                                    ],
                                                   ),
                                                   SizedBox(height: 10),
                                                   Text(

@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:edugate/core/cache_helper.dart';
 import 'package:edugate/features/home/models/university_model.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meta/meta.dart';
@@ -18,9 +19,17 @@ class HomeCubit extends Cubit<HomeState> {
 
   FirebaseFirestore firestore = FirebaseFirestore.instance;
 
-  void getUniversities() async {
-    if (universities.isNotEmpty) return;
+  void makeFavourite(UniversityModel item) async {
+    emit(LoadingMakeFavouriteState());
+    bool saved = await CacheHelper.changeFavourite(item);
+    if (saved) {
+      emit(SavedFavouriteState());
+    } else {
+      emit(RemovedFavouriteState());
+    }
+  }
 
+  void getUniversities() async {
     emit(LoadingHomeState());
     try {
       var data = await firestore.collection("universities").get();
@@ -36,6 +45,7 @@ class HomeCubit extends Cubit<HomeState> {
 
       getSliders();
     } catch (error) {
+      log(error.toString(), name: "getUniversities");
       emit(ErrorHomeState());
     }
   }
@@ -58,9 +68,6 @@ class HomeCubit extends Cubit<HomeState> {
 
   List<Map<String, dynamic>> sliders = [];
   void getSliders() async {
-    if (sliders.isNotEmpty) {
-      return;
-    }
     emit(LoadingHomeState());
     try {
       var data = await firestore.collection("slider").get();

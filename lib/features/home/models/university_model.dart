@@ -1,5 +1,7 @@
 import 'package:edugate/features/home/models/major_model.dart';
 
+import '../../../core/cache_helper.dart';
+
 class UniversityModel {
   final String image;
   final String requirements;
@@ -11,6 +13,7 @@ class UniversityModel {
   final String email;
   final String desc;
   final String id;
+  // bool isFavorite;
 
   UniversityModel({
     required this.image,
@@ -23,6 +26,7 @@ class UniversityModel {
     required this.email,
     required this.desc,
     required this.id,
+    // this.isFavorite = false,
   });
 
   factory UniversityModel.fromJson(Map<String, dynamic> json) {
@@ -40,6 +44,7 @@ class UniversityModel {
       email: json['email'],
       desc: json['desc'],
       id: json['id'],
+      // isFavorite: CacheHelper.isFavorite(json["id"]),
     );
   }
 
