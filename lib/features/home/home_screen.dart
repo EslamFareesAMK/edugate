@@ -197,9 +197,7 @@ class HomeScreen extends StatelessWidget {
                                               borderRadius:
                                                   BorderRadius.circular(8),
                                               image: DecorationImage(
-                                                image: NetworkImage(
-                                                  item["image"],
-                                                ),
+                                                image: NetworkImage(item.image),
                                                 fit: BoxFit.cover,
                                               ),
                                             ),
@@ -212,7 +210,7 @@ class HomeScreen extends StatelessWidget {
                                                     CrossAxisAlignment.start,
                                                 children: [
                                                   Text(
-                                                    item["name"],
+                                                    item.name,
                                                     style: TextStyle(
                                                       fontWeight:
                                                           FontWeight.bold,
@@ -221,14 +219,14 @@ class HomeScreen extends StatelessWidget {
                                                   ),
                                                   SizedBox(height: 10),
                                                   Text(
-                                                    item["desc"],
+                                                    item.desc,
                                                     maxLines: 4,
                                                     overflow:
                                                         TextOverflow.ellipsis,
                                                   ),
                                                   SizedBox(height: 10),
                                                   Text(
-                                                    item["address"],
+                                                    item.address,
                                                     maxLines: 2,
                                                     overflow:
                                                         TextOverflow.ellipsis,

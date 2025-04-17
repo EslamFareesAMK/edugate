@@ -1,22 +1,24 @@
 import 'package:edugate/core/app_colors.dart';
 import 'package:edugate/core/app_functions.dart';
+import 'package:edugate/features/apply_for_university/apply_for_university_screen.dart';
+import 'package:edugate/features/home/models/university_model.dart';
 import 'package:flutter/material.dart';
 
 class UniversityDetailsScreen extends StatelessWidget {
   const UniversityDetailsScreen({super.key, required this.item});
 
-  final Map<String, dynamic> item;
+  final UniversityModel item;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(item["name"])),
+      appBar: AppBar(title: Text(item.name)),
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Image.network(
-              item["image"],
+              item.image,
               height: 300,
               fit: BoxFit.cover,
               width: context.screenWidth,
@@ -31,7 +33,7 @@ class UniversityDetailsScreen extends StatelessWidget {
                     child: ListTile(
                       leading: Icon(Icons.dashboard),
                       title: Text(
-                        item["name"],
+                        item.name,
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 18,
@@ -43,7 +45,7 @@ class UniversityDetailsScreen extends StatelessWidget {
                     child: ListTile(
                       leading: Icon(Icons.mail),
                       title: Text(
-                        item["email"],
+                        item.email,
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 18,
@@ -55,7 +57,7 @@ class UniversityDetailsScreen extends StatelessWidget {
                     child: ListTile(
                       leading: Icon(Icons.phone),
                       title: Text(
-                        item["phone"],
+                        item.phone,
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 18,
@@ -66,14 +68,15 @@ class UniversityDetailsScreen extends StatelessWidget {
                   Card(
                     child: ListTile(
                       leading: Icon(Icons.location_pin),
-                      title: Text(
-                        item["address"],
-                        style: TextStyle(fontSize: 16),
-                      ),
+                      title: Text(item.address, style: TextStyle(fontSize: 16)),
                     ),
                   ),
 
-                  Text("Majors"),
+                  Text("Requirements"),
+                  Text(item.requirements, style: TextStyle(fontSize: 16)),
+
+                  Divider(),
+                  Text("Majors", style: TextStyle(fontWeight: FontWeight.bold)),
 
                   SizedBox(
                     height: 50,
@@ -87,20 +90,22 @@ class UniversityDetailsScreen extends StatelessWidget {
                             color: AppColors.primary,
                           ),
                           child: Text(
-                            item["majors"][index],
+                            item.majors[index].name,
                             style: TextStyle(color: Colors.white),
                           ),
                         );
                       },
-                      itemCount: item["majors"].length,
+                      itemCount: item.majors.length,
                       scrollDirection: Axis.horizontal,
                     ),
                   ),
 
-                  Text(item["desc"], style: TextStyle(fontSize: 16)),
+                  Text(item.desc, style: TextStyle(fontSize: 16)),
 
                   MaterialButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      context.goToPage(ApplyForUniversityScreen(item: item));
+                    },
                     minWidth: context.screenWidth,
                     height: 50,
                     color: AppColors.primary,

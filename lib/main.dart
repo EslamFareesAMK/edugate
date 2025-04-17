@@ -1,5 +1,6 @@
 import 'package:edugate/core/app_colors.dart';
 import 'package:edugate/core/cache_helper.dart';
+import 'package:edugate/features/apply_for_university/cubit/apply_cubit.dart';
 import 'package:edugate/features/home/cubit/home_cubit.dart';
 import 'package:edugate/features/login/cubit/login_cubit.dart';
 import 'package:edugate/features/sign_up/cubit/sign_up_cubit.dart';
@@ -28,6 +29,7 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (context) => LoginCubit()),
         BlocProvider(create: (context) => SignUpCubit()),
         BlocProvider(create: (context) => HomeCubit()),
+        BlocProvider(create: (context) => ApplyCubit()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

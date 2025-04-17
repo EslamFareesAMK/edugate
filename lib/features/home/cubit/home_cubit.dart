@@ -1,5 +1,8 @@
+import 'dart:developer';
+
 import 'package:bloc/bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:edugate/features/home/models/university_model.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meta/meta.dart';
 
@@ -10,21 +13,28 @@ class HomeCubit extends Cubit<HomeState> {
 
   static HomeCubit get(context) => BlocProvider.of(context);
 
-  List<Map<String, dynamic>> universities = [];
-  List<Map<String, dynamic>> allUniversities = [];
+  List<UniversityModel> universities = [];
+  List<UniversityModel> allUniversities = [];
 
   FirebaseFirestore firestore = FirebaseFirestore.instance;
 
   void getUniversities() async {
-    if (universities.isNotEmpty) {
-      return;
-    }
+    // if (universities.isNotEmpty) {
+    //   return;
+    // }
     emit(LoadingHomeState());
     try {
       var data = await firestore.collection("universities").get();
-      allUniversities = data.docs.map((e) => e.data()).toList();
+      allUniversities =
+          data.docs.map((e) {
+            var university = e.data();
+            university["id"] = e.id;
+
+            return UniversityModel.fromJson(university);
+          }).toList();
       universities = allUniversities;
       // emit(SuccessHomeState());
+
       getSliders();
     } catch (error) {
       emit(ErrorHomeState());
@@ -38,7 +48,7 @@ class HomeCubit extends Cubit<HomeState> {
       universities =
           allUniversities
               .where(
-                (item) => item["name"].toString().toLowerCase().contains(
+                (item) => item.name.toString().toLowerCase().contains(
                   query.toLowerCase(),
                 ),
               )
