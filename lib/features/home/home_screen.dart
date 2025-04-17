@@ -60,7 +60,7 @@ class HomeScreen extends StatelessWidget {
                   leading: Icon(Icons.person),
                 ),
                 ListTile(
-                  title: Text("Applications"),
+                  title: Text("My Applications"),
                   onTap: () {
                     context.goToPage(ApplicationsScreen());
                   },

@@ -19,9 +19,8 @@ class HomeCubit extends Cubit<HomeState> {
   FirebaseFirestore firestore = FirebaseFirestore.instance;
 
   void getUniversities() async {
-    // if (universities.isNotEmpty) {
-    //   return;
-    // }
+    if (universities.isNotEmpty) return;
+
     emit(LoadingHomeState());
     try {
       var data = await firestore.collection("universities").get();

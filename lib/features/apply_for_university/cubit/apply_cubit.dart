@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:bloc/bloc.dart';
@@ -42,11 +43,12 @@ class ApplyCubit extends Cubit<ApplyState> {
           await firestore
               .collection("applications")
               .where("university.id", isEqualTo: university.id)
-              .where("major", isEqualTo: majorSelected)
+              .where("major", isEqualTo: majorSelected.toJson())
               .where("user.uid", isEqualTo: user["uid"])
               .get();
 
       if (majorQuerySnapshot.docs.isNotEmpty) {
+        log("Application already exists", name: "error");
         emit(ErrorApplyState());
         return;
       }
@@ -70,14 +72,19 @@ class ApplyCubit extends Cubit<ApplyState> {
             "motherJob": motherJob,
             "idPhoto": idPhoto,
             "certificatePhoto": certificatePhoto,
+            "interviewDate": DateTime(2010).toString(),
           })
           .then((value) {
             emit(SuccessApplyState());
           })
           .catchError((error) {
+            log(error.toString(), name: "error");
+
             emit(ErrorApplyState());
           });
-    } catch (e) {
+    } catch (error) {
+      log(error.toString(), name: "error");
+
       emit(ErrorApplyState());
     }
   }

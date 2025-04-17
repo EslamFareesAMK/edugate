@@ -47,6 +47,8 @@ class ApplyForUniversityScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    ApplyCubit.get(context).idPhoto = null;
+    ApplyCubit.get(context).certificatePhoto = null;
     return Scaffold(
       appBar: AppBar(title: Text("Apply for ${item.name}")),
       body: SingleChildScrollView(
