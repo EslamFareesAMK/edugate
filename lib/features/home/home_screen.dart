@@ -81,7 +81,7 @@ class HomeScreen extends StatelessWidget {
                   onTap: () {
                     context.goToPage(SavedUniversitiesScreen());
                   },
-                  leading: Icon(Icons.pages),
+                  leading: Icon(Icons.bookmark),
                 ),
                 ListTile(
                   title: Text("About us"),
