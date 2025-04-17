@@ -24,7 +24,7 @@ class HomeScreen extends StatelessWidget {
     return BlocConsumer<HomeCubit, HomeState>(
       listener: (context, state) {
         if (state is SavedFavouriteState) {
-          context.showSuccessSnack("Saved to favoourites");
+          context.showSuccessSnack("Saved to favourites");
         }
         if (state is RemovedFavouriteState) {
           context.showErrorSnack("Removed from favourites");
